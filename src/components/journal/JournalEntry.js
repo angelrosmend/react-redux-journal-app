@@ -1,50 +1,29 @@
-import React from 'react';
-import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import { activeNote } from '../../actions/notes';
+import React from 'react'
 
-export const JournalEntry = ({ id, date, title, body, url }) => {
-
-    const noteDate = moment(date);
-    const dispatch = useDispatch();
-
-    const handleEntryClick = () => {
-        dispatch( 
-            activeNote( id, {
-                date, title, body, url
-            })
-        );
-    }
-
+export const JournalEntry = () => {
     return (
-        <div 
-            className="journal__entry pointer animate__animated animate__fadeIn animate__faster"
-            onClick={ handleEntryClick }
-        >
+        <div className="journal__entry pointer">
             
-            {
-                url &&
-                <div 
-                    className="journal__entry-picture"
-                    style={{
-                        backgroundSize: 'cover',
-                        backgroundImage: `url(${ url })`
-                    }}
-                ></div>
-            }
+            <div 
+                className="journal__entry-picture"
+                style={{
+                    backgroundSize: 'cover',
+                    backgroundImage: 'url(https://earthsky.org/upl/2018/12/comet-wirtanen-Jack-Fusco-dec-2018-Anza-Borrego-desert-CA-e1544613895713.jpg)'
+                }}
+            ></div>
 
             <div className="journal__entry-body">
                 <p className="journal__entry-title">
-                    { title }
+                    Un nuevo día
                 </p>
                 <p className="journal__entry-content">
-                    { body }
+                    Reprehenderit id in duis consectetur deserunt veniam fugiat.
                 </p>
             </div>
 
             <div className="journal__entry-date-box">
-                <span> { noteDate.format('dddd') } </span>
-                <h4> { noteDate.format('Do') } </h4>
+                <span>Monday</span>
+                <h4>28</h4>
             </div>
 
         </div>
