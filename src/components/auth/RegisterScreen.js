@@ -1,12 +1,57 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import validator from "validator"
+import { useForm } from '../../hooks/useForm';
+import { defaultRegister } from '../../state/actions/auth';
+import { removeError, setError } from '../../state/actions/ui';
+
 
 export const RegisterScreen = () => {
+     const [formValues, handleInputChange] = useForm({
+        name: "",
+        email: "",
+        password: "",
+        password2: ""
+    }) 
+    const {name, email, password, password2}  = formValues;
+    const dispatch = useDispatch()
+    const {msgError} = useSelector(state => state.ui)
+
+    const isFormValid = () => {
+        if(name.trim().length === 0){
+            dispatch(setError("name is required"))
+            return false;
+        }else if (!validator.isEmail(email)){
+            dispatch(setError("Enter a valid email"))
+            return false
+        }else if(password !== password2 || password.length < 5){
+            dispatch(setError("enter a valid password"))
+            return false
+        }
+        dispatch(removeError())
+        return true
+    }
+    const handleRegister = (e) => {
+        e.preventDefault()
+
+       if(isFormValid()){
+           dispatch(defaultRegister(email, password, name))
+       }
+       
+    }
+
+
+   
     return (
         <>
             <h3 className="auth__title">Register</h3>
 
-            <form>
+            <form onSubmit={handleRegister}>
+
+                {msgError && 
+                <div className="auth__alert-error">{msgError}</div>
+                }
 
                 <input 
                     type="text"
@@ -14,6 +59,8 @@ export const RegisterScreen = () => {
                     name="name"
                     className="auth__input"
                     autoComplete="off"
+                    value={name}
+                    onChange={handleInputChange}
                 />
 
                 <input 
@@ -22,6 +69,8 @@ export const RegisterScreen = () => {
                     name="email"
                     className="auth__input"
                     autoComplete="off"
+                    value={email}
+                    onChange={handleInputChange}
                 />
 
                 <input 
@@ -29,6 +78,8 @@ export const RegisterScreen = () => {
                     placeholder="Password"
                     name="password"
                     className="auth__input"
+                    value={password}
+                    onChange={handleInputChange}
                 />
 
                 <input 
@@ -36,6 +87,9 @@ export const RegisterScreen = () => {
                     placeholder="Confirm password"
                     name="password2"
                     className="auth__input"
+                    value={password2}
+                    onChange={handleInputChange}
+
                 />
 
 
